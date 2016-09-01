@@ -1,16 +1,19 @@
 """
-Example Wordpress Contact Form Code:
-[contact-form]
-[contact-field label='Name' type='name' required='1'/]
-[contact-field label='Email' type='email' required='1'/]
-[contact-field label='New Orleans Bowl 12/20/2014' type='radio' required='1' options=' Louisiana Lafayette, Nevada'/]
-[/contact-form]
+Scrapes an ESPN URL for schedule data
+Returns an array of dictionaries containing game details
+E.g. [game{away_team, home_team, away_rank, home_rank, away_abbr, home_abbr},...]
 
-This generates the following look in Wordpress:
-National Championship - #1 Princeton vs. #2 Yale - 1/1/1900
-Options:
-- Princeton
-- Yale
+Displays dictionary as in a terminal as...
+
+    South Dakota State             @ #13 TCU                           
+    Stephen F Austin               @     Texas Tech                    
+    New Hampshire                  @     San Diego State               
+#2  Clemson                        @     Auburn                        
+    BYU                            @     Arizona                       
+    Northern Illinois              @     Wyoming                       
+    Northern Arizona               @     Arizona State                 
+#10 Notre Dame                     @     Texas                         
+#11 Ole Miss                       @ #4  Florida State  
 """
 import os
 import sys
@@ -23,7 +26,6 @@ def scrape(url):
     """
     Scrapes an ESPN URL for schedule data
     Returns an array of dictionaries containing game details
-    E.g. [game{away_team, home_team, away_rank, home_rank, away_abbr, home_abbr},...]
     """
     # headers = {'User-Agent': 'Mozilla/5.0'}
     # page = requests.get(url, headers=headers)
