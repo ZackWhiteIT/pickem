@@ -4,8 +4,8 @@ import csv
 
 """
 CSV Import Format:
-GAME_NAME,DATE,HOME_TEAM_RANK,HOME_TEAM,AWAY_TEAM_RANK,AWAY_TEAM
-National Championship,1/1/1900,1,Princeton,2,Yale
+HOME_TEAM_RANK,HOME_TEAM,AWAY_TEAM_RANK,AWAY_TEAM
+#1,Princeton,#2,Yale
 
 The GAME_NAME column is required but can be left blank to generate a HOME_TEAM vs. AWAY_TEAM description.
 
@@ -23,57 +23,40 @@ Options:
 - Yale
 """
 
-if(len(sys.argv) == 3):
-	IMPORT_PATH = sys.argv[1]
-	EXPORT_PATH = sys.argv[2]
-	
-	import_file = open(os.path.abspath(IMPORT_PATH), 'r')
-	
-	#if(os.path.exists(os.path.abspath(EXPORT_PATH)) == False):
-		#print('Oops.')
-		#os.mkdir(os.path.dirname(os.path.abspath(EXPORT_PATH)))
-		
-	export_file = open(os.path.abspath(EXPORT_PATH), 'w')
-	
-	#Generate contact form header code
-	wp_contact_form_code = "[contact-form]\n[contact-field label='Name' type='name' required='1'/]\n[contact-field label='Email' type='email' required='1'/]"
-	
-	#Open CSV file for editing
-	csvreader = csv.reader(import_file, delimiter=',')
-	
-	#Skip header row
-	next(csvreader)
-	
-	for row in csvreader:
-		#CSV Field Mapping
-		game_name = str(row[0])
-		game_date = str(row[1])
-		home_team_rank = str(row[2])
-		home_team = str(row[3])
-		away_team_rank = str(row[4])
-		away_team = str(row[5])
-		
-		#Formatting
-		if(len(home_team_rank) > 0):
-			home_team_rank = '#' + home_team_rank + ' '
-		if(len(away_team_rank) > 0):
-			away_team_rank = '#' + away_team_rank + ' '
-		if(len(game_name) > 0):
-			game_name += ' - '
-		
-		#Create label
-		game_name = game_name + away_team_rank + away_team + ' @ ' + home_team_rank + home_team + ' - ' + game_date
-		
-		#Generate contact form radio button code
-		wp_contact_form_code += "\n[contact-field label='" + game_name + "' type='radio' required='1' options='" + away_team + ", " + home_team + "'/]"
-	
-	#Close contact form code
-	wp_contact_form_code += "\n[/contact-form]"
-	
-	export_file.write(wp_contact_form_code)
-	
-	export_file.close()
-	import_file.close()
- 
+if(len(sys.argv) == 2):
+    IMPORT_PATH = sys.argv[1]
+    import_file = open(os.path.abspath(IMPORT_PATH), 'r')
+
+    #Generate contact form header code
+    wp_contact_form_code = "[contact-form]\n[contact-field label='Name' type='name' required='1'/]\n[contact-field label='Email' type='email' required='1'/]"
+
+    #Open CSV file for editing
+    csvreader = csv.reader(import_file, delimiter=',')
+
+    for row in csvreader:
+        #CSV Field Mapping
+        home_team_rank = str(row[0])
+        home_team = str(row[1])
+        away_team_rank = str(row[2])
+        away_team = str(row[3])
+
+        #Create label
+        if away_team_rank and home_team_rank:
+            label = "{} {} @ {} {}".format(away_team_rank,away_team,home_team_rank,home_team)
+        elif away_team_rank:
+            label = "{} {} @ {}".format(away_team_rank,away_team,home_team)
+        elif home_team_rank:
+            label = "{} @ {} {}".format(away_team,home_team_rank,home_team)
+        else:
+            label = "{} @ {}".format(away_team,home_team)
+
+        #Generate contact form radio button code
+        wp_contact_form_code += "\n[contact-field label='{}' type='radio' required='1' options='{},{}'/]".format(label,away_team,home_team)
+
+    #Close contact form code
+    wp_contact_form_code += "\n[/contact-form]"
+    print(wp_contact_form_code)
+    import_file.close()
+
 else:
-	print('Error: Invalid and/or missing argument(s)\nArguments: ' + str(sys.argv))
+    print('Error: Invalid and/or missing argument(s)\nArguments: ' + str(sys.argv))
