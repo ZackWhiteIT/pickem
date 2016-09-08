@@ -35,7 +35,7 @@ def scrape(url):
     for table in tables:
         for row in table.find_all('tr'):
             # Convert generator object to list and remove ticket details
-            game_details = [item.encode('utf-8').strip() for item in row.stripped_strings][:-3]
+            game_details = [str(item) for item in row.stripped_strings][:-3]
 
             if 'matchup' not in game_details:  # Skip header rows
                 # Normalize team info to RANK, TEAM

@@ -24,6 +24,10 @@ Options:
 """
 
 if(len(sys.argv) == 2):
+    RANKED_FILTER = True
+    TEAM_FILTER = ['Alabama', 'Auburn', 'LSU', 'Arkansas', 'Texas A&M',
+                   'Missouri', 'Tennessee', 'Vanderbilt', 'Georgia', 'Florida',
+                   'South Carolina', 'Kentucky', 'Ole Miss', 'Mississippi State']
     IMPORT_PATH = sys.argv[1]
     import_file = open(os.path.abspath(IMPORT_PATH), 'r')
 
@@ -51,7 +55,16 @@ if(len(sys.argv) == 2):
             label = "{} @ {}".format(away_team,home_team)
 
         #Generate contact form radio button code
-        wp_contact_form_code += "\n[contact-field label='{}' type='radio' required='1' options='{},{}'/]".format(label,away_team,home_team)
+        if RANKED_FILTER:
+            if home_team_rank or away_team_rank:
+                wp_contact_form_code += "\n[contact-field label='{}' type='radio' required='1' options='{},{}'/]".format(label,away_team,home_team)
+            elif home_team in TEAM_FILTER or away_team in TEAM_FILTER:
+                wp_contact_form_code += "\n[contact-field label='{}' type='radio' required='1' options='{},{}'/]".format(label,away_team,home_team)
+            else:
+                pass
+        else:
+            if home_team in TEAM_FILTER or away_team in TEAM_FILTER:
+                wp_contact_form_code += "\n[contact-field label='{}' type='radio' required='1' options='{},{}'/]".format(label,away_team,home_team)
 
     #Close contact form code
     wp_contact_form_code += "\n[/contact-form]"
