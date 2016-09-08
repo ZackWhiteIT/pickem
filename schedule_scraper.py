@@ -19,17 +19,13 @@ import os
 import sys
 from bs4 import BeautifulSoup
 from lxml import html
-import requests
 
-
-def scrape(url):
+def scrape(html_file, url):
     """
     Scrapes an ESPN URL for schedule data
     Returns an array of dictionaries containing game details
     """
-    # headers = {'User-Agent': 'Mozilla/5.0'}
-    # page = requests.get(url, headers=headers)
-    soup = BeautifulSoup(open('espn.html'), 'lxml')
+    soup = BeautifulSoup(open(html_file), 'lxml')
     tables = soup.find_all('table')
     games = []
     for table in tables:
@@ -76,9 +72,9 @@ def displaySchedule(games_array, output_type):
 
 
 def main(args=None):
-    url = 'http://www.espn.com/college-football/schedule'
-    url = 'http://static.jsugamecocksports.com/custompages/Stats/Football/2015/teamcume.htm'
-    displaySchedule(scrape(url), 'csv')
+    if(len(sys.argv) == 2):
+        HTML_FILE = sys.argv[1]
+        displaySchedule(HTML_FILE, 'csv')
 
 # Standard boilerplate to call the main() function.
 if __name__ == '__main__':
