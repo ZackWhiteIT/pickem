@@ -19,8 +19,6 @@ import os
 import sys
 from bs4 import BeautifulSoup
 from lxml import html
-import requests
-
 
 def scrape(html_file):
     """
