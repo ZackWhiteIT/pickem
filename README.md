@@ -55,6 +55,10 @@ It's probably crossed my mind, but I haven't gotten around to it.
 
 Yes, my group is managed at my [website](http://pickem.zackwhiteit.com/).
 
+## Author(s)
+
+[Zack White](https://github.com/ZackWhiteIT)
+
 ## License
 
 This software is licensed under The MIT License (MIT). See the [LICENSE](LICENSE) file in the top distribution directory for the full license text.
