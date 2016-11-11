@@ -47,10 +47,10 @@ def scrape(html_file):
 
                 game_dict = {}
                 game_dict['away_rank'] = game_details[0]
-                game_dict['away_team'] = game_details[1]
+                game_dict['away_team'] = game_details[1].replace('\'', '')
                 game_dict['away_abbr'] = game_details[2]
                 game_dict['home_rank'] = game_details[3]
-                game_dict['home_team'] = game_details[4]
+                game_dict['home_team'] = game_details[4].replace('\'', '')
                 game_dict['home_abbr'] = game_details[5]
                 games.append(game_dict)
     return games
