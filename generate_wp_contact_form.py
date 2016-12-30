@@ -24,7 +24,7 @@ Options:
 """
 
 if(len(sys.argv) == 2):
-    include_all_teams = False
+    include_all_teams = True
     RANKED_FILTER = True
     TEAM_FILTER = ['Alabama', 'Auburn', 'LSU', 'Arkansas', 'Texas A&M',
                    'Missouri', 'Tennessee', 'Vanderbilt', 'Georgia', 'Florida',
@@ -45,8 +45,14 @@ if(len(sys.argv) == 2):
         away_team_rank = str(row[2])
         away_team = str(row[3])
 
+        bowl_name = ''
+        if len(row) == 5:
+            bowl_name = str(row[4])
+
         #Create label
-        if away_team_rank and home_team_rank:
+        if bowl_name:
+            label = bowl_name
+        elif away_team_rank and home_team_rank:
             label = "{} {} @ {} {}".format(away_team_rank,away_team,home_team_rank,home_team)
         elif away_team_rank:
             label = "{} {} @ {}".format(away_team_rank,away_team,home_team)
